@@ -1,0 +1,154 @@
+openapi: 3.0.3
+info:
+  title: Робот пылесос
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api/v1
+paths:
+  /robot/{idRobot}:
+    get:
+      summary: Метод получения данных о роботе по id
+      tags: 
+        - Robot
+      operationId: getRobot
+      parameters:
+        - name: idRobot
+          in: path
+          required: true
+          description: id Robot
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Успешный ответ
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Robot"
+        '400':
+          description: Несуществующий id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error' 
+        '500':
+          description: Работаем над устронением данной проблеммы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /robot:
+    post:
+      summary: Метод добавления робота в систему
+      tags: 
+        - Robot
+      operationId: addRobot
+      requestBody:
+        required: true
+        content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Robot" 
+      responses:
+        "200":
+          description: Успешный ответ
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Robot"
+        "default":
+          description: Всё остальное
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /user:
+    post:
+      summary: Метод регистрации клиента
+      tags: 
+        - User
+      operationId: registrationUser
+      requestBody:
+        required: true
+        content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/User" 
+      responses:
+        "200":
+          description: Успешный ответ
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "default":
+          description: Всё остальное
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Robot:
+      type: object
+      required:
+        - id
+        - model
+        - version
+        - factory_number
+        - mac_adress
+        - id_group_users
+        - resourse
+        - status
+      properties:
+        id:
+          type: integer 
+          example: 1
+          description: Id робота
+        model:
+          type: string
+          example: ACD4432
+        version:
+          type: string 
+          example: 3443frgrg444
+          description: Версия ПО
+        factory_number:
+          type: string
+          example: 3443fyujuj84545rgrg444
+        mac_adress:
+          type: string
+        id_group_users:
+          type: integer 
+        resourse:
+          type: integer 
+          description: Пробег 
+        status:
+          type: string 
+          example: worked
+    User:
+      type: object
+      required:
+        - id
+        - login
+        - hash
+        - email
+      properties:
+        id:
+          type: integer 
+          example: 1
+        login: 
+          type: string
+        hash:
+          type: string
+        email:
+          type: string
+    Error:
+      type: object
+      required:
+        - error_message
+        - error_code
+      properties:
+        error_message:
+          type: string
+        error_code:
+          type: integer
